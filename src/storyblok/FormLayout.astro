@@ -12,7 +12,7 @@ const { blok } = Astro.props
 const {text} = blok
 
 
-export const prerender = false;
+/* export const prerender = false;
 
 if (Astro.request.method === "POST") {
   try {
@@ -26,13 +26,16 @@ if (Astro.request.method === "POST") {
       console.error(error.message);
     }
   }
-}
+} */
 ---
 
 <section  {...storyblokEditable(blok)} class="layout-px layout-py bg-secondary layout__cta" >
   <div class="container">
     <SbRichText content={text} />
-    <form class="contact-form" method="POST" netlify>
+ 
+    <form class="contact-form" method="POST" 
+   data-netlify="true"
+    >
       <label>
         Name
         <input type="text" name="name" required />
@@ -81,7 +84,7 @@ if (Astro.request.method === "POST") {
       grid-template-columns: repeat(2,1fr);
     }
 
-    .contact-form :nth-child(n+3){
+    .contact-form :nth-child(n+4){
       grid-column: span 2;
     }
   }
