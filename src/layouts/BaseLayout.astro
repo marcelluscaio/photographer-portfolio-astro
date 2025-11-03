@@ -1,0 +1,180 @@
+---
+import { useStoryblokApi } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+type Props = {
+  path: string
+}
+
+const {path} = Astro.props
+
+const storyblokApi = useStoryblokApi()
+const { data } = await storyblokApi.get('cdn/stories/global/header', {
+  version: 'draft',
+})
+const hero = data.story
+---
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href="/favicon.svg" />
+    <title>The Storyblok Astro Ultimate Tutorial: Part 1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <StoryblokComponent blok={hero.content} path={path} />
+    <slot />
+    <footer>Photogaphy portfolio. All rights reserved.</footer>
+  </body>
+</html>
+
+<style is:global>
+
+/* Reset */
+  *,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-wrap: balance;
+}
+
+p {
+	text-wrap: pretty;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+button {
+	border: none;
+	background-color: transparent;
+}
+
+button,
+input,
+select {
+	cursor: pointer;
+}
+
+ul {
+	list-style: none;
+}
+
+/* Theme */
+:root {
+  /* Primary design tokens */
+  --yellow-400: #f4c557;
+  --gray-200: #f5f3f0;
+  --gray-400: #575550;
+  --gray-600: #16181d;
+  --gray-900:#111317;
+  /* Fluid font size between 350px and 1800px screens */
+  --fs-1: clamp(0.875rem, 0.8448rem + 0.1379vw, 1rem); /* 14 - 16 */
+  --fs-2: clamp(1.1664rem, 1.1066rem + 0.2732vw, 1.414rem); /* 18 - 22 */
+  --fs-3: clamp(1.5548rem, 1.4475rem + 0.4906vw, 1.9994rem); /* 24 - 31 */
+  --fs-4: clamp(2.0725rem, 1.8904rem + 0.8327vw, 2.8271rem); /* 33 - 45 */
+  --padding-inline: clamp(1rem, -0.2672rem + 5.7931vw, 6.25rem); /* 16 - 100 */
+  --padding-block: clamp(1rem, 0.1552rem + 3.8621vw, 4.5rem); /* 16 - 75 */
+
+  /* Semantic design tokens */
+  --color-primary: var(--yellow-400);
+  --background-primary: var(--gray-900);
+  --background-secondary: var(--gray-600);
+  --text-primary: var(--gray-400);
+  --text-secondary: var(--gray-200);
+}
+
+/* Global */
+  body{
+    font-family: "Zalando Sans Expanded", sans-serif;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    font-size: var(--fs-2);
+  }
+
+  footer{
+    padding: 1rem;
+    text-align: center;
+    font-size: var(--fs-1);
+   }
+
+  h1, h2, h3, h4, h5, h6{
+    color: var(--text-secondary);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.07em
+  }
+
+  h1{
+    font-size: var(--fs-4)
+  }
+
+  .layout-px {
+    padding-inline: var(--padding-inline);
+  }
+
+  .layout-py {
+    padding-block: var(--padding-block);
+  }
+
+  .container{
+    max-width: 75rem;
+    margin-inline: auto;
+  }
+
+  .bg-secondary{
+    background-color: var(--background-secondary);
+  }
+</style>

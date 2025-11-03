@@ -1,0 +1,68 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import { Image } from 'astro:assets'
+
+const { blok, path } = Astro.props
+---
+
+<main {...storyblokEditable(blok)}>
+  <section  {...storyblokEditable(blok)} class="section layout-px layout-py">
+  <div class="container">
+
+    <div class="title-container">
+      <h1>{blok.title}</h1>
+      <a href="/projects"> Back to all projects</a>
+      </div>
+    <div class="projects-card-grid">
+      {blok.images.map(image =>(
+        <article class="project-photo-card">
+          <Image 
+      src={image.filename}
+      alt={image.alt}
+      width={300}
+      height={400}
+      class="project-card"
+      />
+        </article>
+      ))}
+  </div>
+  </section>
+</main>
+
+<style>
+
+  .title-container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .title-container a  {
+    color: var(--text-secondary);
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    background-color: var(--containerBg);
+  }
+
+.projects-card-grid{
+  display: grid;
+
+  --min: 20rem;
+  --gap: 2rem;
+
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min)), 1fr));
+}
+
+.project-card{
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+</style>

@@ -1,0 +1,90 @@
+---
+import { storyblokEditable} from '@storyblok/astro'
+
+import { storyLinkMapper } from '../utils/link-mapper';
+import { Image } from 'astro:assets';
+
+export type Button = {
+      link: any;
+      text: string;
+      icon: any;
+      variant: "primary" | "secondary";
+    }
+
+type Props = {
+  blok: Button,
+  containerBg?: string
+}
+
+const { blok, containerBg } = Astro.props;
+const {link, text, icon, variant} = blok;
+
+let linkProps = {
+		href: storyLinkMapper(link)
+	};
+
+  if (link?.target) {
+		linkProps = Object.assign(linkProps, { target: link.target });
+	}
+
+	if (link?.rel) {
+		linkProps = Object.assign(linkProps, { rel: link.rel });
+	}
+
+---
+
+
+  <a 
+  {...linkProps} 
+  {...storyblokEditable(blok)}
+  class={`button--base ${variant}`}
+  ><span>{text}</span> 
+  {icon.filename && 
+  <Image src={icon.filename} alt={icon.alt || ''} inferSize class="button--icon" />
+  }
+</a>
+
+
+<style define:vars={{containerBg}}>
+
+  .button--base{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .button--icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  :global(.primary){
+    padding: 0.5rem 1rem;
+    color: var(--background-primary);
+    background-color: var(--color-primary);
+    border-radius: 4px;
+  }
+
+   .primary > .button--icon {
+    filter: brightness(0) invert(.2);
+  }
+
+  .secondary {
+    color: var(--text-secondary);
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    background-color: var(--containerBg);
+  }
+
+  .secondary > .button--icon {
+    filter: brightness(0) invert(.9);
+  }
+
+  .tertiary {
+
+  }
+
+
+
+</style>

@@ -1,0 +1,22 @@
+---
+import { storyblokEditable} from '@storyblok/astro'
+import SbRichText from '../components/SbRichText.astro';
+
+type Props = {
+  blok: any;
+}
+
+const { blok } = Astro.props
+---
+
+<section  {...storyblokEditable(blok)} class="layout-px layout-py bg-secondary layout__rt">
+  <div class="container">
+    <SbRichText content={blok.content} />
+  </div>
+</section>
+
+<style>
+.layout__rt{
+  text-align: center;
+}
+</style>

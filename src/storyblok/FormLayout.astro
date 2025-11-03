@@ -1,0 +1,89 @@
+---
+import { storyblokEditable, renderRichText, type ISbRichtext } from '@storyblok/astro'
+import SbRichText from '../components/SbRichText.astro';
+
+type Props = {
+  blok: {
+    text: ISbRichtext;
+  }
+}
+
+const { blok } = Astro.props
+const {text} = blok
+
+
+export const prerender = false;
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const name = data.get("name");
+    const email = data.get("email");
+    const message = data.get("message");
+    console.log("Form submission received:", { name, email, message });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+---
+
+<section  {...storyblokEditable(blok)} class="layout-px layout-py bg-secondary layout__cta" >
+  <div class="container">
+    <SbRichText content={text} />
+    <form class="contact-form" method="POST">
+      <label>
+        Name
+        <input type="text" name="name" required />
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" required />
+      </label>
+      <label>
+        Message
+        <textarea name="message" rows="5" required></textarea>
+      </label>
+      <button type="submit" class="primary">Send Message</button>
+    </form>
+  </div>
+</section>
+
+<style>
+  .container{
+    max-width: 44rem
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .contact-form label {
+    display: grid;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-2);
+    line-height: 1;
+  }
+
+  .contact-form :where(input, textarea){
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  @media (min-width: 769px) {
+    .contact-form {
+      grid-template-columns: repeat(2,1fr);
+    }
+
+    .contact-form :nth-child(n+3){
+      grid-column: span 2;
+    }
+  }
+
+</style>

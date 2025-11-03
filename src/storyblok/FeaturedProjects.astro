@@ -1,0 +1,124 @@
+---
+import { storyblokEditable, useStoryblokApi } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import { Image } from 'astro:assets';
+
+type Props = {
+  blok: {
+    title: string;
+    button: any[]
+  };
+}
+
+const storyblokApi = useStoryblokApi();
+const { data } = await storyblokApi.get('cdn/stories', {
+  version: "draft" ,
+  content_type: 'Project',
+  per_page: 3
+})
+
+
+
+const { blok } = Astro.props
+---
+
+<section  {...storyblokEditable(blok)} class="section layout-px layout-py">
+  <div class="container">
+   <div class="projects__header">
+    <h2>{blok.title}</h2>
+    {blok.button.map(item => <StoryblokComponent blok={item} />)}
+   </div>
+   <div class="projects-card-grid">
+    {data.stories.map(story =>( 
+      <a href={`/${story.full_slug}`}>
+
+    <article class="project-card">
+      <Image 
+      src={story.content.images[0].filename}
+      alt={story.content.images[0].alt}
+      width={300}
+      height={400}
+      />
+      <div class="text-container">
+
+      <p class="title">{story.content.title}</p>
+      <p class="cta">View project</p>
+      </div>
+    </article>
+      </a>
+    ))}
+   </div>
+  </div>
+</section>
+
+<style>
+.projects__header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem
+}
+
+.projects-card-grid{
+  display: grid;
+
+  --min: 20rem;
+  --gap: 2rem;
+
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min)), 1fr));
+}
+
+.project-card{
+  position: relative;
+  isolation: isolate;
+  aspect-ratio: 3/4;
+  max-height: 50vh;
+  width: 100%;
+  display: grid;
+  align-content: end;
+  padding: .75rem;
+  overflow: hidden;
+}
+
+.text-container {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity .6s ease, transform .3s ease;
+}
+
+.project-card:hover img {
+  opacity: 0.5;
+}
+
+.project-card:hover .text-container {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-card .title {
+  color: var(--color-primary);
+  font-size: var(--fs-2);
+  line-height: 1;
+}
+.project-card .cta {
+  color: var(--gray-200);
+  font-size: var(--fs-1);
+  font-weight: 700
+  line-height: 1;
+}
+
+.project-card img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+   height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  border-radius: 8px;
+  transition: opacity .3s ease;
+}
+
+</style>

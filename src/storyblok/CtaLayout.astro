@@ -1,0 +1,41 @@
+---
+import { storyblokEditable, renderRichText, type ISbRichtext } from '@storyblok/astro'
+import SbRichText from '../components/SbRichText.astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import type { Button } from './Button.astro';
+
+type Props = {
+  blok: {
+    text: ISbRichtext;
+    buttons: Button[];
+  }
+}
+
+const { blok } = Astro.props
+const {text, buttons} = blok
+---
+
+<section  {...storyblokEditable(blok)} class="layout-px layout-py bg-secondary layout__cta" >
+  <div class="container">
+    <SbRichText content={text} />
+    <div class="button-container">
+      {buttons.map(button => <StoryblokComponent blok={button} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+.layout__cta{
+  text-align: center;
+}
+
+.container {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.button-container{
+  display: flex;
+  justify-content: center;
+}
+</style>

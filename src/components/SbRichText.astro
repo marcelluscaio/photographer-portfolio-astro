@@ -1,0 +1,21 @@
+---
+import {  renderRichText, type ISbRichtext } from '@storyblok/astro'
+
+type Props= {
+  content: ISbRichtext
+}
+
+const { content} = Astro.props
+const renderedRichText = renderRichText(content);
+---
+
+<div set:html={renderedRichText} class="rich-text"/>
+
+<style is:global>
+  .rich-text > *  {
+  margin-top: .75em;
+  }
+  .rich-text > *:first-child {
+    margin-top: 0;
+  }
+</style>

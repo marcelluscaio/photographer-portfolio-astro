@@ -1,0 +1,22 @@
+{
+	"name": "astro-ultimate-tutorial",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"generate-sb-types": "storyblok pull-components --space 288132554953365 && storyblok-generate-ts source=./components.288132554953365.json target=./src/types/storyblok.d.ts"
+	},
+	"devDependencies": {
+		"@storyblok/astro": "^4.0.5",
+		"@vitejs/plugin-basic-ssl": "^1.1.0",
+		"astro": "^4.7.1",
+		"vite": "^5.2.11"
+	},
+	"dependencies": {
+		"storyblok-generate-ts": "^2.2.0"
+	}
+}
